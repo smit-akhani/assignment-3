@@ -1,0 +1,14 @@
+<div id="<%= dom_id book %>">
+  <p>
+    <strong>Name:</strong>
+    <%= book.name %>
+  </p>
+
+  <p>
+    <strong>Cover photos:</strong>
+    <% book.cover_photos.each do |cover_photo| %>
+      <div><%= link_to cover_photo.filename, cover_photo %></div>
+    <% end %>
+  </p>
+
+</div>
