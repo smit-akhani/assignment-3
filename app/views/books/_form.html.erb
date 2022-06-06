@@ -22,6 +22,11 @@
   </div>
 
   <div>
+    <%= form.label :author_id, style: "display: block" %>
+    <%= form.collection_select :author_id, Author.order(:name),:id,:name %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

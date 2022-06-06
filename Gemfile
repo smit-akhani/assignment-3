@@ -72,3 +72,8 @@ group :test do
 end
 
 gem "cssbundling-rails"
+gem "active_storage_validations"
+gem "mini_magick", ">= 4.9.5"
+gem "pagy", ">= 5.10.1"
+gem "figaro"
+gem "aws-sdk-s3", require: false

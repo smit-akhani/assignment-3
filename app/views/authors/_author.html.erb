@@ -1,17 +1,21 @@
 <div id="<%= dom_id author %>">
-  <p>
-    <strong>Name:</strong>
-    <%= author.name %>
-  </p>
-
-  <p>
-    <strong>Address:</strong>
-    <%= author.address %>
-  </p>
-
-  <p>
-    <strong>Profile picture:</strong>
-    <%= link_to author.profile_picture.filename, author.profile_picture if author.profile_picture.attached? %>
-  </p>
-
+  <div class="card m-2">
+    <div class="card-header">
+        <p><%= link_to author.name, author %><br/>
+        <%= author.address %></p>
+        <p><%= link_to "Show books", books_author_path(author.id) %></p>
+    </div>
+    <% if author.profile_picture.attached? %>
+      <%= image_tag (author.profile_picture.representation(resize_to_limit: [150, 150])), class: "card-img-top" if author.profile_picture.attached? %>
+      <div class="card-body">
+        <%= link_to "View Pic", rails_blob_path(author.profile_picture, disposition: "preview"), class: "card-link" %><br/>
+        <%= button_to "Delete Pic", delete_image_attachment_author_path(author.profile_picture.signed_id), method: :delete, class: "card-link" %><br/>
+        <%= link_to "Download Pic", rails_blob_path(author.profile_picture, disposition: "attachment"), class: "card-link" %>
+      </div>
+    <% else %>
+      <div class="card-body">
+        <p>No profile_picture<br/>attached</p>
+      </div>
+    <% end %> 
+  </div>
 </div>

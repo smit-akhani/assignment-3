@@ -2,13 +2,11 @@
 
 <h1>Books</h1>
 
-<div id="books">
+<div class="d-flex flex-row align-items-start align-self-start" id="books">
   <% @books.each do |book| %>
     <%= render book %>
-    <p>
-      <%= link_to "Show this book", book %>
-    </p>
   <% end %>
 </div>
 
-<%= link_to "New book", new_book_path %>
+<%= link_to "New book", new_book_path %><br/>
+<%= link_to "Back to Home", root_path %>

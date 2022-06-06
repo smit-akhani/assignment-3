@@ -1,0 +1,35 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Books</h1>
+
+<% if @books.empty? %>
+  <p>No books...</p>
+<% else %>
+  <div>
+    <div class="d-flex flex-row align-items-start align-self-start" id="books">
+      <% @books.each do |book| %>
+        <div class="card m-2">
+        <div class="card-header">
+            <p><%= link_to book.name, book %></p>
+        </div>
+        <% if book.cover_photos.attached? %>
+          <% (book.cover_photos).each do |image| %>
+            <%= image_tag (image.representation(resize_to_limit: [150, 150])), class: "card-img-top" if book.cover_photos.attached? %>
+            <div class="card-body">
+              <%= link_to "View", rails_blob_path(image, disposition: "preview"), class: "card-link" %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="card-body">
+            <p>No cover_photos<br/>attached</p>
+          </div>
+        <% end %>
+        <%= link_to "Show this book", book, class: "card-body card-text" %> 
+        </div>
+      <% end %>
+    </div>
+    <%== pagy_nav(@pagy) %>
+  </div>
+<% end %>
+
+<%= link_to "Back to Home", root_path %>

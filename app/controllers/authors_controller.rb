@@ -1,9 +1,11 @@
 class AuthorsController < ApplicationController
-  before_action :set_author, only: %i[ show edit update destroy ]
+  include Pagy::Backend
+  Pagy::DEFAULT[:items] = 5
+  before_action :set_author, only: %i[ show edit update destroy delete_picture]
 
   # GET /authors or /authors.json
   def index
-    @authors = Author.all
+    @pagy, @authors = pagy(Author.all)
   end
 
   # GET /authors/1 or /authors/1.json
@@ -25,7 +27,7 @@ class AuthorsController < ApplicationController
 
     respond_to do |format|
       if @author.save
-        format.html { redirect_to author_url(@author), notice: "Author was successfully created." }
+        format.html { redirect_to root_url, notice: "Author was successfully created." }
         format.json { render :show, status: :created, location: @author }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -55,6 +57,20 @@ class AuthorsController < ApplicationController
       format.html { redirect_to authors_url, notice: "Author was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def delete_image_attachment
+    @image = ActiveStorage::Blob.find_signed(params[:id])
+    @image.attachments.first.purge_later
+    
+    respond_to do |format|
+      format.html { redirect_to root_url, notice: "Profile picture successfully removed..." }
+      format.json { head :no_content }
+    end
+  end
+
+  def books
+    @pagy, @books = pagy(Book.where(author_id: params[:id]))
   end
 
   private

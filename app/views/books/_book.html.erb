@@ -1,14 +1,20 @@
 <div id="<%= dom_id book %>">
-  <p>
-    <strong>Name:</strong>
-    <%= book.name %>
-  </p>
-
-  <p>
-    <strong>Cover photos:</strong>
-    <% book.cover_photos.each do |cover_photo| %>
-      <div><%= link_to cover_photo.filename, cover_photo %></div>
+  <div class="card m-2">
+    <div class="card-header">
+        <p><%= link_to book.name, book %></p>
+    </div>
+    <% if book.cover_photos.attached? %>
+      <% (book.cover_photos).each do |image| %>
+        <%= image_tag (image.representation(resize_to_limit: [150, 150])), class: "card-img-top" if book.cover_photos.attached? %>
+        <div class="card-body">
+          <%= link_to "View Pic", rails_blob_path(image, disposition: "preview"), class: "card-link" %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="card-body">
+        <p>No cover_photos<br/>attached</p>
+      </div>
     <% end %>
-  </p>
-
+    <%= link_to "Show this book", book, class: "card-body card-text" %> 
+  </div>
 </div>
